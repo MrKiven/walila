@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+"""
+  Walila - Awesome toolkit for dobechina internal.
+"""
+
 
 from .config import load_app_config  # noqa
 from .message import MessageProducer, MessageConsumer  # noqa
