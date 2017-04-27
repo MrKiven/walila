@@ -8,7 +8,7 @@ from setuptools import setup, find_packages
 
 def get_version():
     v_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                               'lib', '__init__.py')
+                               'walila', '__init__.py')
     ver_info_str = re.compile(r".*version_info = \((.*?)\)", re.S). \
         match(open(v_file_path).read()).group(1)
     return re.sub(r'(\'|"|\s+)', '', ver_info_str).replace(',', '.')
