@@ -7,7 +7,7 @@
 import yaml
 import ConfigParser
 
-from lib.const import (
+from .const import (
     DEFAULT_APP_CONFIG_PATH,
     DEFAULT_ENV,
     DEFAULT_ENV_KEY,
