@@ -11,6 +11,11 @@ from celery import Task
 logger = logging.getLogger(__name__)
 
 
+class DefaultSettings(object):
+    BROKER_URL = 'amqp://guest:guest@localhost:5672'
+    CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+
+
 class WalilaTask(Task):
     """Custom task class"""
 
@@ -37,7 +42,6 @@ def _bind_own_base_task(func):
     return _
 
 
-@_bind_own_base_task
 def init_celery_app(settings):
     """Init celery app with settings objec"""
     app = celery.Celery()
@@ -45,6 +49,7 @@ def init_celery_app(settings):
     return app
 
 
+# FIXME: register task first before run worker...
 class TaskManager(object):
 
     def __init__(self, app_settings, app_initialize_func=None):
@@ -64,11 +69,12 @@ class TaskManager(object):
         if self.app is None:
             self.app = self.app_initialize_func(settings)
 
-    def register_task(self, task_name, task, queue_name='default'):
+    def register_task(self, task_name, task, queue_name='default', **kwargs):
         """Reigster a task with `task_name` `task func` `queue_name` etc.
         """
         assert callable(task), "Task should be a function or method"
-        wrapper_task = self.app.task(bind=True)(task)
+        wrapper_task = self.app.task(
+            bind=True, base=WalilaTask, **kwargs)(task)
         self.tasks[task.__name__] = wrapper_task
         self.queues[task_name] = queue_name
         return True
@@ -85,3 +91,6 @@ class TaskManager(object):
 
     def get_last_result(self, task_name):
         return self.async_result[task_name]
+
+task_manager = TaskManager(DefaultSettings)
+app = task_manager.app
