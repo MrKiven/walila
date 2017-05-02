@@ -14,3 +14,10 @@ def test_set_settings():
     assert settings.DB_SETTINGS == {}
     settings.DB_SETTINGS = {'hello': 'world'}
     assert settings.DB_SETTINGS == {'hello': 'world'}
+
+    class MyConfig(object):
+        DB_SETTINGS = {'hello': 'hello-too'}
+
+    settings.from_object(MyConfig)
+
+    assert settings.DB_SETTINGS == {'hello': 'hello-too'}

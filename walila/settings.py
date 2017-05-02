@@ -145,6 +145,20 @@ class CeleryConfig(DefaultConfig):
 
 class Config(DefaultConfig):
 
+    """Defaults config. Specially you should load your own config from object,
+    or even a config file such as `yaml`
+
+    e.g.
+
+        from walila.settings import settings
+
+        class MyConfig(object):
+            # some settings
+
+        settings.from_object(MyConfig)
+
+    """
+
     __NEED_LOADED_SETTINGS__ = {}
     __DEFAULT_SETTINGS__ = {
         # db
