@@ -269,6 +269,7 @@ class ModelMeta(DeclarativeMeta):
     def __new__(self, name, bases, attrs):
         cls = DeclarativeMeta.__new__(self, name, bases, attrs)
 
+        # TODO: :class: `CacheMixinBase
         from .cache import CacheMixinBase
         for base in bases:
             if issubclass(base, CacheMixinBase) and hasattr(cls, "_hook"):
