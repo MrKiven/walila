@@ -227,7 +227,7 @@ class MessageProducer(object):
         except BaseException:
             # should remove this invalid connection and producer
             producer_pool.connections.replace(producer.connection)
-            producer.__connection__ == None
+            producer.__connection__ = None
             producer_pool.replace(producer)
             raise
         else:

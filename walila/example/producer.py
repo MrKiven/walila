@@ -11,8 +11,10 @@ transport_urls = ["amqp://guest:guest@localhost:5672//"]
 
 producer = MessageProducer('my_test', transport_urls, 'fanout')
 
+
 def random_message(length=6):
-    return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(length))
+    return ''.join(random.choice(string.ascii_uppercase + string.digits)
+                   for _ in range(length))
 
 count = sys.argv[1]
 for _ in xrange(int(count)):

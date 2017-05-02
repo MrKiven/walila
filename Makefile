@@ -1,5 +1,5 @@
 pep8:
-	flake8 lib tests
+	flake8 walila tests
 
 pylint: pep8
 	bash tools/scripts/ci.sh

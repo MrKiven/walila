@@ -3,7 +3,7 @@
 import os
 import pytest
 
-from lib.config import load_app_config
+from walila.config import load_app_config
 
 current_path = os.path.dirname(os.path.abspath(__file__))
 test_config_path = os.path.join(current_path, 'test.ini')

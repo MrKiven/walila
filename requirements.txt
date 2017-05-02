@@ -3,3 +3,4 @@ pytest==3.0.7
 celery==4.0.2
 kombu==4.0.2
 gevent==1.2.1
+SQLAlchemy>=1.0.0,<1.1.0

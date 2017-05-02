@@ -87,7 +87,7 @@ class TaskManager(object):
         return async_result
 
     # alias
-    perform=apply_async
+    perform = apply_async
 
     def get_last_result(self, task_name):
         return self.async_result[task_name]
