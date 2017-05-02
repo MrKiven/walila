@@ -154,5 +154,13 @@ class Config(DefaultConfig):
         "DB_SETTINGS": default_empty({})
     }
 
+    explicit = True
+
+    def __init__(self, *args, **kwargs):
+        super(Config, self).__init__(*args, **kwargs)
+
+    def _after_update_config(self):
+        super(Config, self)._after_update_config()
+
 
 settings = Config()
