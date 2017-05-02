@@ -27,7 +27,7 @@ with open('requirements.txt') as require_fd:
 setup(
     name='walila',
     version=get_version(),
-    description="Dobechina lib",
+    description="Walila - Awesome tookit for internal",
     author='Kiven',
     author_email='shenjialong@dobechina.com',
     packages=find_packages(),

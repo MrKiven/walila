@@ -4,5 +4,5 @@
   Walila - Awesome toolkit for dobechina internal.
 """
 
-version_info = (0, 2, 0)
+version_info = (0, 2, 1)
 __version__ = ".".join([str(v) for v in version_info])
