@@ -39,6 +39,11 @@ class HookRegistry(object):
         self._registry = collections.defaultdict(list)
 
     def __getattr__(self, attr):
+        """Call all hooks which must be start with `on_`.
+
+           registry.on_api_called()
+
+        """
         if not attr.startswith('on_'):
             raise AttributeError("{} object has no attribute {}".format(
                 self.__class__.__name__, attr))
@@ -47,9 +52,12 @@ class HookRegistry(object):
                                         for hook in hooks]
 
     def register(self, hook):
+        """Register a function which decorator by `define_hook`.
+        """
         self._registry[hook.event].append(hook.func)
 
     def clear(self):
+        """Clear all hooks"""
         self._registry.clear()
 
 
