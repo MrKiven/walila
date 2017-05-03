@@ -12,3 +12,7 @@ clear_pyc:
 	find . -type f -name '*.pyo' -exec rm -f {} +
 	find . -type f -name '*.~' -exec rm -f {} +
 	find . -type d -name '__pycache__' -exec rm -rf {} +
+
+tag:
+	@t=`python setup.py --version`;\
+	echo v$$t; git tag v$$t
