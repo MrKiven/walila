@@ -15,12 +15,7 @@ from kombu.pools import producers
 from kombu.mixins import ConsumerMixin
 from kombu.exceptions import MessageStateError
 
-# Mock
-console = logging.StreamHandler(sys.stdout)
-console.setLevel(logging.INFO)
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-logger.addHandler(console)
 
 
 class UnknowSendModeError(Exception):

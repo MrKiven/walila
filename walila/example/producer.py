@@ -5,7 +5,7 @@ import string
 import random
 import gevent
 
-from ..message import MessageProducer
+from walila.message import MessageProducer
 
 transport_urls = ["amqp://guest:guest@localhost:5672//"]
 

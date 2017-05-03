@@ -165,7 +165,10 @@ class Config(DefaultConfig):
         "DB_POOL_SIZE": 10,
         "DB_MAX_OVERFLOW": 1,
         "DB_POOL_RECYCLE": 300,
-        "DB_SETTINGS": default_empty({})
+        "DB_SETTINGS": default_empty({}),
+
+        # default logger name
+        "LOGGER_NAME": "SouthPay",
     }
 
     explicit = True

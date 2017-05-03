@@ -47,3 +47,11 @@ class cached_property(property):
             value = self.func(obj)
             obj.__dict__[self.__name__] = value
         return value
+
+
+def obj2str(obj):
+    if isinstance(obj, unicode):
+        return obj.encode('utf8')
+    if isinstance(obj, (str, int, float, bool)):
+        return str(obj)
+    return repr(obj)
