@@ -140,7 +140,14 @@ class DefaultConfig(BaseConfig):
 
 
 class CeleryConfig(DefaultConfig):
-    """"""
+    """Celery config used by the project's async feature"""
+
+    __NEED_LOADED_SETTINGS__ = { }
+    __DEFAULT_SETTINGS__ = {
+        "BROKER_URL": "",
+        "CELERY_RESULT_BACKEND": default_empty(''),
+        "CELERY_QUEUES": default_empty({}),
+    }
 
 
 class Config(DefaultConfig):
@@ -178,6 +185,7 @@ class Config(DefaultConfig):
 
     def _after_update_config(self):
         super(Config, self)._after_update_config()
+        self.celeryconfig = CeleryConfig()
 
 
 settings = Config()
