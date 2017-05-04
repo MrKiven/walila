@@ -4,8 +4,14 @@ import sys
 import logging
 import yaml
 
-from .consts import APP_CONFIG_PATH
-from .utils import cached_property
+from .consts import (
+    APP_CONFIG_PATH,
+    DEFAULT_WORKER_CLASS,
+    DEFAULT_WORKER_CONNECTIONS,
+    DEFAULT_WORKER_TIMEOUT,
+    DEFAULT_APP_PORT,
+)
+from .utils import cached_property, get_cpu_count
 
 logger = logging.getLogger(__name__)
 
@@ -52,6 +58,49 @@ class AppConfig(object):
     @cached_property
     def celery_settings(self):
         return self.config.get('celery_settings')
+
+    @cached_property
+    def worker_class(self):
+        return self._get_conf('worker_class', DEFAULT_WORKER_CLASS)
+
+    @cached_property
+    def worker_connections(self):
+        return self._get_conf(
+            'worker_connections',
+            DEFAULT_WORKER_CONNECTIONS)
+
+    @cached_property
+    def timeout(self):
+        """Workers silent for more than this many seconds are killed and
+           restarted.
+        """
+        return self._get_conf('timeout', DEFAULT_WORKER_TIMEOUT)
+
+    @cached_property
+    def port(self):
+        return self._get_conf('port', DEFAULT_APP_PORT)
+
+    @cached_property
+    def app_uri(self):
+        app = self._get_conf('app', None)
+        if app is None:
+            raise RuntimeError("Missing `app` in app.yaml.")
+        return app
+
+    def auto_worker_num(self):
+        """http://docs.gunicorn.org/en/latest/design.html#how-many-workers"""
+        return 2 * get_cpu_count() + 1
+
+    def get_app_binds(self):
+        return "0.0.0.0:%d" % self.port
+
+    def get_app_n_workers(self):
+        return self._get_conf('worker_nums', )
+
+    def _get_conf(self, key, default):
+        if 'services' in self.config:
+            return self.config['services'].get(key, default)
+        return self.config.get(key, default)
 
 
 app_config = None
