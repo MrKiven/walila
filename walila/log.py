@@ -139,4 +139,3 @@ class WalilaFormatter(logging.Formatter):
     def format(self, record):
         record.msg = self._format(record.msg)
         return super(WalilaFormatter, self).format(record)
-

@@ -65,6 +65,10 @@ class TaskManager(object):
 
         self.init_app(app_settings)
 
+    @property
+    def celery_app(self):
+        return self.app
+
     def init_app(self, settings):
         if self.app is None:
             self.app = self.app_initialize_func(settings)
@@ -99,3 +103,4 @@ class TaskManager(object):
         return self.async_result[task_name]
 
 task_manager = TaskManager(DefaultSettings)
+app = task_manager.celery_app
