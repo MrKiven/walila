@@ -6,6 +6,7 @@ from gunicorn.app.wsgiapp import WSGIApplication
 from walila.config import load_app_config
 from . import hooks
 
+
 class SetAppMixin(object):
 
     def _setup(self, config, opts):
