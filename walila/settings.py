@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
 
+import logging
+
 from importlib import import_module
 
 from .utils import EmptyValue
+
+
+logger = logging.getLogger(__name__)
 
 
 class ConfigError(Exception):
@@ -142,7 +147,7 @@ class DefaultConfig(BaseConfig):
 class CeleryConfig(DefaultConfig):
     """Celery config used by the project's async feature"""
 
-    __NEED_LOADED_SETTINGS__ = { }
+    __NEED_LOADED_SETTINGS__ = {}
     __DEFAULT_SETTINGS__ = {
         "BROKER_URL": "",
         "CELERY_RESULT_BACKEND": default_empty(''),
@@ -189,12 +194,15 @@ class Config(DefaultConfig):
 
     def _after_update_config(self):
         super(Config, self)._after_update_config()
+        from .config import load_app_config
         self.celeryconfig = CeleryConfig()
-        # we need update celery settings after update default config
-        # self._update_celery_settings()
+        self._update_celery_settings(load_app_config().celery_settings)
 
     def _update_celery_settings(self, settings):
         """Update celery settings"""
+        if settings is None:
+            logger.warning("No celery settings configured, using default.")
+            return
         self.celeryconfig.from_object(settings)
 
 
