@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+import sys
+import os
+
 
 class EmptyValue(object):
 
@@ -55,3 +58,11 @@ def obj2str(obj):
     if isinstance(obj, (str, int, float, bool)):
         return str(obj)
     return repr(obj)
+
+
+def get_cpu_count():
+    if 'bsd' in sys.platform or sys.platform == 'darwin':
+        cpu_count = 4
+    else:
+        cpu_count = os.sysconf('SC_NPROCESSORS_ONLN')
+    return cpu_count
