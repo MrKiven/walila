@@ -184,6 +184,9 @@ class Config(DefaultConfig):
 
         # default logger name
         "LOGGER_NAME": "SouthPay",
+
+        # async
+        "ASYNC_ENABLED": False
     }
 
     explicit = True
@@ -195,8 +198,9 @@ class Config(DefaultConfig):
     def _after_update_config(self):
         super(Config, self)._after_update_config()
         from .config import load_app_config
-        self.celeryconfig = CeleryConfig()
-        self._update_celery_settings(load_app_config().celery_settings)
+        if self.ASYNC_ENABLED:
+            self.celeryconfig = CeleryConfig()
+            self._update_celery_settings(load_app_config().celery_settings)
 
     def _update_celery_settings(self, settings):
         """Update celery settings"""
