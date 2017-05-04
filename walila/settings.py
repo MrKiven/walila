@@ -162,6 +162,9 @@ class Config(DefaultConfig):
         class MyConfig(object):
             # some settings
 
+        class CeleryConfig(object):
+            # some stuff
+
         settings.from_object(MyConfig)
 
     """
@@ -182,10 +185,17 @@ class Config(DefaultConfig):
 
     def __init__(self, *args, **kwargs):
         super(Config, self).__init__(*args, **kwargs)
+        self.celeryconfig = None
 
     def _after_update_config(self):
         super(Config, self)._after_update_config()
         self.celeryconfig = CeleryConfig()
+        # we need update celery settings after update default config
+        # self._update_celery_settings()
+
+    def _update_celery_settings(self, settings):
+        """Update celery settings"""
+        self.celeryconfig.from_object(settings)
 
 
 settings = Config()

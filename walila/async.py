@@ -52,7 +52,7 @@ def init_celery_app(settings):
 
 class TaskManager(object):
 
-    def __init__(self, app_settings, app_initialize_func=None):
+    def __init__(self, celery_settings, app_initialize_func=None):
         self.app = None
         self.tasks = {}
         self.queues = {}
@@ -63,10 +63,11 @@ class TaskManager(object):
 
         self.app_initialize_func = app_initialize_func
 
-        self.init_app(app_settings)
+        self.init_app(celery_settings)
 
     @property
     def celery_app(self):
+        """Alias"""
         return self.app
 
     def init_app(self, settings):
@@ -105,5 +106,10 @@ class TaskManager(object):
     def get_last_result(self, task_name):
         return self.async_result[task_name]
 
+##
+# TODO:
+#   from walila.settings import settings
+#   task_manager = TaskManager(settings.celery_settings)
+##
 task_manager = TaskManager(DefaultSettings)
 app = task_manager.celery_app
