@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from ..async import task_manager
-from ..async import app  # noqa
+from walila.queue.async import task_manager
+from walila.queue.async import app  # noqa
 
 
 def add(self, x, y):

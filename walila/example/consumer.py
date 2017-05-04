@@ -2,7 +2,7 @@
 
 import logging
 
-from walila.message import MessageConsumer
+from walila.queue.message import MessageConsumer
 from walila.log import setup_loggers
 
 setup_loggers('SouthPay')
