@@ -96,6 +96,9 @@ class TaskManager(object):
         self.async_result[task_name] = async_result
         return async_result
 
+    def send_task(self, name):
+        logger.warning("Not implemented yet.")
+
     # alias
     perform = apply_async
 
