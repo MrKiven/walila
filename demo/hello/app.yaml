@@ -1,0 +1,3 @@
+app_name: SayHello
+app: app:app
+worker_nums: 1

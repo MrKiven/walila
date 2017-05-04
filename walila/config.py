@@ -87,6 +87,7 @@ class AppConfig(object):
             raise RuntimeError("Missing `app` in app.yaml.")
         return app
 
+    @cached_property
     def auto_worker_num(self):
         """http://docs.gunicorn.org/en/latest/design.html#how-many-workers"""
         return 2 * get_cpu_count() + 1
@@ -95,7 +96,7 @@ class AppConfig(object):
         return "0.0.0.0:%d" % self.port
 
     def get_app_n_workers(self):
-        return self._get_conf('worker_nums', )
+        return self._get_conf('worker_nums', self.auto_worker_num)
 
     def _get_conf(self, key, default):
         if 'services' in self.config:

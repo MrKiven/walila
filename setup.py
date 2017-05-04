@@ -32,5 +32,8 @@ setup(
     author_email='shenjialong@dobechina.com',
     packages=find_packages(),
     tests_require=test_require,
-    install_requires=require
+    install_requires=require,
+    entry_points={
+        'console_scripts': ['walila = walila.cmds:walila']
+    },
 )

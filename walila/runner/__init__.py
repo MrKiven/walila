@@ -34,3 +34,7 @@ class WalilaWsgiApp(SetAppMixin, WSGIApplication):
         self.cfg.set('post_fork', hooks.post_fork)
         self.cfg.set('accesslog', '-')
         self.cfg.set('errorlog', '-')
+
+
+def serve():
+    WalilaWsgiApp().run()
