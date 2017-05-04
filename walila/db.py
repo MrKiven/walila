@@ -297,13 +297,16 @@ class RecycleField(object):
 
 class DBManager(object):
     def __init__(self):
+        self.loaded = False  # only create session once
         self.session_map = {}
 
     def create_sessions(self):
-        if not settings.DB_SETTINGS:
-            raise ValueError('DB_SETTINGS is empty, check it')
-        for db, db_configs in settings.DB_SETTINGS.iteritems():
-            self.add_session(db, db_configs)
+        if not self.loaded:
+            if not settings.DB_SETTINGS:
+                raise ValueError('DB_SETTINGS is empty, check it')
+            for db, db_configs in settings.DB_SETTINGS.iteritems():
+                self.add_session(db, db_configs)
+            self.loaded = True
 
     def get_session(self, name):
         try:
