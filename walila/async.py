@@ -51,6 +51,38 @@ def init_celery_app(settings):
 
 
 class TaskManager(object):
+    """Async task manager (singleton)
+
+    :param celery_settings: `walila.settings.settings.celeryconfig`
+    :param app_initialize_func: initialize celery app,
+     default `init_celery_app`
+
+    Feature:
+
+        * register async task
+        * invoke async task
+        * get async task's result(:class: `celery.result.AsyncResult`), option
+        * tasks queues record
+
+    Usage:
+
+        # async_tasks.py
+
+        from walila.async import task_manager
+        from walila.async import app  # noqa
+
+        def task_add(self, x, y):
+            return x + y
+
+        task_manager.register_task(task_add)
+
+
+
+        # Start celery worker:
+
+        $ celery -A your.pkg.async_task worker --loglevel=info -E -Q default
+
+    """
 
     def __init__(self, celery_settings, app_initialize_func=None):
         self.app = None
