@@ -2,6 +2,7 @@
 
 import logging
 import functools
+import inspect
 
 import celery
 
@@ -49,7 +50,6 @@ def init_celery_app(settings):
     return app
 
 
-# FIXME: register task first before run worker...
 class TaskManager(object):
 
     def __init__(self, app_settings, app_initialize_func=None):
@@ -69,14 +69,20 @@ class TaskManager(object):
         if self.app is None:
             self.app = self.app_initialize_func(settings)
 
-    def register_task(self, task_name, task, queue_name='default', **kwargs):
+    def is_bind(self, task):
+        args = inspect.getargspec(task)
+        return args[0] and args[0][0] in ('self', 'cls')
+
+    def register_task(self, task, task_name=None, queue_name='default',
+                      **kwargs):
         """Reigster a task with `task_name` `task func` `queue_name` etc.
         """
         assert callable(task), "Task should be a function or method"
         wrapper_task = self.app.task(
-            bind=True, base=WalilaTask, **kwargs)(task)
-        self.tasks[task.__name__] = wrapper_task
-        self.queues[task_name] = queue_name
+            bind=self.is_bind(task), base=WalilaTask, **kwargs)(task)
+        name = task_name or task.__name__
+        self.tasks[name] = wrapper_task
+        self.queues[name] = queue_name
         return True
 
     def apply_async(self, task_name, *args, **kwargs):
@@ -93,4 +99,3 @@ class TaskManager(object):
         return self.async_result[task_name]
 
 task_manager = TaskManager(DefaultSettings)
-app = task_manager.app
