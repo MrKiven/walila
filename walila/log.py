@@ -5,11 +5,12 @@ import logging
 import logging.config
 
 from walila.utils import obj2str
+from walila.consts import SUB_LOGGER_PREFIX
 
 
 def setup_logger_cls():
 
-    from .config import load_app_config
+    from walila.config import load_app_config
 
     class DefaultLogger(logging.getLoggerClass()):
 
@@ -31,8 +32,8 @@ def setup_logger_cls():
         def __init__(self, *args, **kwargs):
             app_config = load_app_config()
             super(DefaultLogger, self).__init__(*args, **kwargs)
-            self.name = "{name}.{raw}".format(
-                name=app_config.logger_name, raw=self.name)
+            if self.name.startswith(SUB_LOGGER_PREFIX):
+                self.name = "{}.{}".format(app_config.logger_name, self.name)
 
     logging.setLoggerClass(DefaultLogger)
 

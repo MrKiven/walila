@@ -2,3 +2,4 @@ app_name: SayHello
 app: world.app:app
 settings: world.settings
 worker_nums: 1
+logger.name: world
