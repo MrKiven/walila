@@ -1,3 +1,4 @@
 app_name: SayHello
-app: app:app
+app: world.app:app
+settings: world.settings
 worker_nums: 1

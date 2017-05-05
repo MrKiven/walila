@@ -2,4 +2,7 @@
 
 
 def post_fork(server, worker):
-    pass
+    worker.app.chdir()
+    from ..env import initialize
+    # initialize worker process envrionment post fork before init_process
+    initialize()

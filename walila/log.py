@@ -9,6 +9,8 @@ from walila.utils import obj2str
 
 def setup_logger_cls():
 
+    from .config import load_app_config
+
     class DefaultLogger(logging.getLoggerClass()):
 
         def error(self, *args, **kwargs):
@@ -27,10 +29,10 @@ def setup_logger_cls():
         warn = warning
 
         def __init__(self, *args, **kwargs):
-            from .settings import settings
+            app_config = load_app_config()
             super(DefaultLogger, self).__init__(*args, **kwargs)
             self.name = "{name}.{raw}".format(
-                name=settings.LOGGER_NAME, raw=self.name)
+                name=app_config.logger_name, raw=self.name)
 
     logging.setLoggerClass(DefaultLogger)
 

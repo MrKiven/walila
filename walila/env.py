@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 
+import sys
 import logging
 from importlib import import_module
 
 from .log import setup_loggers
 from .config import load_app_config
+from .utils import EmptyValue
 
 
 logger = logging.getLogger(__name__)
@@ -44,8 +46,8 @@ def update_settings():
         return logger.warning("settings is already updated, skipping")
 
     app_config = load_app_config()
-
     from .settings import settings
+    sys.path.insert(0, '.')
     mo_settings = import_module(app_config.app_settings_uri)
     settings.from_object(mo_settings)
     settings_updated = True
@@ -57,6 +59,8 @@ def create_db_sessions():
     if sessions_created:
         return logger.warning("db sessions are already created, skipping")
     from .db import db_manager, patch_column_type_checker
+    from .settings import settings
     patch_column_type_checker()
-    db_manager.create_sessions()
+    if not EmptyValue.is_empty(settings.DB_SETTINGS):
+        db_manager.create_sessions()
     sessions_created = True
