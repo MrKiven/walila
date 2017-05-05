@@ -16,5 +16,5 @@ logger.addHandler(console)
 logger.setLevel(logging.INFO)
 
 
-version_info = (0, 3, 2)
+version_info = (0, 4, 0)
 __version__ = ".".join([str(v) for v in version_info])
