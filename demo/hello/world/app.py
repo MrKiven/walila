@@ -16,7 +16,7 @@ def hello():
 
 @app.route('/tasks/<task_name>')
 def send_task(task_name):
-    if task_name not in task_manager.tasks:
+    if task_name not in task_manager:
         msg = "%r task not exists, skippping." % task_name
         logger.error(msg)
         return msg

@@ -139,6 +139,9 @@ class TaskManager(object):
     def get_last_result(self, task_name):
         return self.async_result[task_name]
 
+    def __contains__(self, task_name):
+        return task_name in self.tasks
+
 
 task_manager = TaskManager()
 app = task_manager.celery_app
