@@ -22,3 +22,18 @@ $ celery -A walila.example.task worker -l INFO -Q default -c 10
 ```
 $ python test.py 10
 ```
+
+
+### Usage
+
+**sample struct**
+
+```
+hello
+├── app.yaml
+├── requirements.txt
+└── world
+    ├── __init__.py
+    ├── app.py
+    └── settings.py
+```
