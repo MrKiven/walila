@@ -24,7 +24,7 @@ $ python test.py 10
 ```
 
 
-### Usage
+### Sample project
 
 **sample struct**
 
@@ -32,6 +32,9 @@ $ python test.py 10
 hello
 ├── app.yaml
 ├── requirements.txt
+├── tests
+│   ├── __init__.py
+│   └── conftest.py
 └── world
     ├── __init__.py
     ├── app.py
