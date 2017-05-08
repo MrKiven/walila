@@ -9,6 +9,7 @@ import celery
 from celery import Task
 
 from ..settings import settings
+from ..config import load_app_config
 
 
 logger = logging.getLogger(__name__)
@@ -45,11 +46,15 @@ def _bind_own_base_task(func):
     return _
 
 
-def init_celery_app(config):
+def init_celery_app():
     """Init celery app with settings objec"""
     app = celery.Celery()
-    app.config_from_object(config)
-    return app
+    celery_config = load_app_config().celery_settings
+    if settings.ASYNC_ENABLED:
+        if not celery_config:
+            raise RuntimeError("No celery configured!!")
+        app.config_from_object(celery_config)
+        return app
 
 
 class TaskManager(object):
@@ -96,16 +101,19 @@ class TaskManager(object):
             app_initialize_func = init_celery_app
 
         self.app_initialize_func = app_initialize_func
-        self.init_app(settings.celeryconfig)
+        self.init_app()
 
     @property
     def celery_app(self):
         """Alias"""
         return self.app
 
-    def init_app(self, settings):
+    def init_app(self):
         if self.app is None:
-            self.app = self.app_initialize_func(settings)
+            self.app = self.app_initialize_func()
+        if self.app is None:
+            raise RuntimeError("Celery is not enabled, check your settings.")
+
 
     def is_bind(self, task):
         args = inspect.getargspec(task)
