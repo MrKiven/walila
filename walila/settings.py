@@ -192,7 +192,7 @@ class Config(DefaultConfig):
         "ASYNC_ENABLED": False
     }
 
-    explicit = True
+    explicit = False
 
     def __init__(self, *args, **kwargs):
         super(Config, self).__init__(*args, **kwargs)
