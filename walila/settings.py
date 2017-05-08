@@ -88,7 +88,7 @@ class BaseConfig(object):
 
 
 class DefaultConfig(BaseConfig):
-    __NEED_LOADED_SETTINGS__ = {}
+    __NEED_LOADED_SETTINGS__ = []
     __DEFAULT_SETTINGS__ = None
 
     explicit = False
@@ -147,7 +147,10 @@ class DefaultConfig(BaseConfig):
 class CeleryConfig(DefaultConfig):
     """Celery config used by the project's async feature"""
 
-    __NEED_LOADED_SETTINGS__ = {}
+    __NEED_LOADED_SETTINGS__ = [
+        "BROKER_URL"
+        "CELERY_RESULT_BACKEND"
+    ]
     __DEFAULT_SETTINGS__ = {
         "BROKER_URL": "",
         "CELERY_RESULT_BACKEND": default_empty(''),
@@ -174,7 +177,7 @@ class Config(DefaultConfig):
 
     """
 
-    __NEED_LOADED_SETTINGS__ = {}
+    __NEED_LOADED_SETTINGS__ = []
     __DEFAULT_SETTINGS__ = {
         # db
         "DB_POOL_SIZE": 10,

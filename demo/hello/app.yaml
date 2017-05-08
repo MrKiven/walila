@@ -3,3 +3,4 @@ app: world.app:app
 settings: world.settings
 worker_nums: 1
 logger.name: world
+celery_settings: world.settings

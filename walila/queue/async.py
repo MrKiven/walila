@@ -86,7 +86,7 @@ class TaskManager(object):
 
     """
 
-    def __init__(self, celery_settings=None, app_initialize_func=None):
+    def __init__(self, app_initialize_func=None):
         self.app = None
         self.tasks = {}
         self.queues = {}

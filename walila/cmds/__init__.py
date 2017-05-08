@@ -3,6 +3,7 @@
 import click
 
 from .serve import serve
+from .consumer import consume
 
 
 @click.group()
@@ -12,3 +13,4 @@ def walila():
 
 
 walila.add_command(serve)
+walila.add_command(consume)

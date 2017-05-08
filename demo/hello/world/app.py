@@ -24,4 +24,3 @@ def send_task(task_name):
     return 'Send Success!'
 
 app.add_url_rule('/hello', 'hello', hello)
-
