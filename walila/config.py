@@ -43,6 +43,10 @@ class EnvConfig(object):
     def env(self):
         return self.config.get('env', DEFAULT_ENV)
 
+    def set_currnet_env(self, env):
+        self.config.update({'env': env})
+
+
 env_config = None
 
 
@@ -91,11 +95,12 @@ class AppConfig(object):
 
     @cached_property
     def app_settings_uri(self):
-        return self.config['settings']
+        return "_".join((self.config['settings'], load_env_config().env))
 
     @cached_property
     def celery_settings(self):
-        return self.config.get('celery_settings')
+        return "_".join((
+            self.config.get('celery_settings', ''), load_env_config().env))
 
     @cached_property
     def worker_class(self):

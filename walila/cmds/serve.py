@@ -2,6 +2,14 @@
 
 import click
 
+from walila.consts import ENV_DEV, ENV_TESTING, ENV_PROD
+
+
+def _validate_env(ctx, argument, value):
+    if value not in (ENV_DEV, ENV_TESTING, ENV_PROD):
+        raise RuntimeError("Invalid env: %s" % value)
+    return value
+
 
 @click.command(
     context_settings={
@@ -9,9 +17,20 @@ import click
         "allow_extra_args": True
     },
     add_help_option=True)
+@click.option('--environment', type=str, default=ENV_DEV,
+              help='current environment', callback=_validate_env)
 @click.pass_context
-def serve(ctx):
+def serve(ctx, environment):
     from ..runner import serve
+    from ..config import load_env_config
+    load_env_config().set_currnet_env(environment)
+
+    group_name = ctx.parent.command.name + ' ' if ctx.parent else ''
+    prog_name = "{}{}".format(group_name, ctx.command.name)
+
+    import sys
+    sys.argv = [prog_name] + ctx.args
+
     serve()
 
 
