@@ -4,6 +4,7 @@
 from gunicorn.app.wsgiapp import WSGIApplication
 
 from walila.config import load_app_config, load_env_config
+from ..env import is_in_dev
 from . import hooks
 
 
@@ -18,6 +19,13 @@ class SetAppMixin(object):
         self.cfg.set('timeout', config.timeout)
         self.cfg.set('bind', config.get_app_binds())
         self.cfg.set('workers', config.get_app_n_workers())
+
+        if is_in_dev():
+            self.cfg.set('errorlog', '-')
+        else:
+            self.cfg.set('syslog', True)
+            self.cfg.set('syslog_facility', 'local6')
+            self.cfg.set('syslog_addr', 'unix:///dev/log#dgram')
 
 
 class WalilaWsgiApp(SetAppMixin, WSGIApplication):

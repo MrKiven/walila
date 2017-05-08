@@ -5,7 +5,7 @@ import logging
 import logging.config
 
 from walila.utils import obj2str
-from walila.consts import SUB_LOGGER_PREFIX
+from walila.consts import SUB_LOGGER_PREFIX, ENV_DEV
 
 
 def setup_logger_cls():
@@ -122,13 +122,19 @@ def _gen_syslog_logging_config(logger_name):
     }
 
 
-def gen_logging_dictconfig(logger_name):
-    return _gen_console_logging_config(logger_name)
+def gen_logging_dictconfig(logger_name, env):
+    if env == ENV_DEV:
+        conf = _gen_console_logging_config(logger_name)
+    elif sys.platform == 'darwin':
+        conf = _gen_console_logging_config(logger_name)
+    else:
+        conf = _gen_syslog_logging_config(logger_name)
+    return conf
 
 
-def setup_loggers(logger_name):
+def setup_loggers(logger_name, env):
     setup_logger_cls()
-    conf = gen_logging_dictconfig(logger_name)
+    conf = gen_logging_dictconfig(logger_name, env)
     logging.config.dictConfig(conf)
 
 
