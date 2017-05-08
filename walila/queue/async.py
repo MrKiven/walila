@@ -114,7 +114,6 @@ class TaskManager(object):
         if self.app is None:
             raise RuntimeError("Celery is not enabled, check your settings.")
 
-
     def is_bind(self, task):
         args = inspect.getargspec(task)
         return args[0] and args[0][0] in ('self', 'cls')

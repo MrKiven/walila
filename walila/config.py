@@ -10,10 +10,48 @@ from .consts import (
     DEFAULT_WORKER_CONNECTIONS,
     DEFAULT_WORKER_TIMEOUT,
     DEFAULT_APP_PORT,
+    DEFAULT_ENV_CONFIG_PATH,
+    DEFAULT_ENV,
 )
 from .utils import cached_property, get_cpu_count
 
 logger = logging.getLogger(__name__)
+
+
+class EnvConfig(object):
+    """Application independent config, as a yaml file at
+    `/etc/southpay/env.yaml`. e.g:
+
+        env: dev|testing|prod
+        may_be_other_property: not usage yet
+    """
+
+    def __init__(self):
+        self.config = None
+
+    def load(self):
+        try:
+            with open(DEFAULT_ENV_CONFIG_PATH) as config_fd:
+                self.config = yaml.load(config_fd)
+        except(IOError, yaml.error.YAMLError):
+            logger.error("Connot load env config %s, default `dev`",
+                         DEFAULT_ENV_CONFIG_PATH)
+            self.config = {}
+        return self
+
+    @cached_property
+    def env(self):
+        return self.config.get('env', DEFAULT_ENV)
+
+env_config = None
+
+
+def load_env_config():
+    """load env config lazily but only once"""
+    global env_config
+    if env_config is None:
+        env_config = EnvConfig().load()
+    return env_config
 
 
 class AppConfig(object):
