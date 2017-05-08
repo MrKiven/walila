@@ -3,7 +3,7 @@
 
 from gunicorn.app.wsgiapp import WSGIApplication
 
-from walila.config import load_app_config
+from walila.config import load_app_config, load_env_config
 from . import hooks
 
 
@@ -23,10 +23,11 @@ class SetAppMixin(object):
 class WalilaWsgiApp(SetAppMixin, WSGIApplication):
 
     def init(self, parser, opts, args):
-        app_config = load_app_config()
-        self.app_uri = app_config.app_uri
+        self.app_config = load_app_config()
+        self.env_config = load_env_config()
+        self.app_uri = self.app_config.app_uri
         args = [self.app_uri]
-        self._setup(app_config, opts)
+        self._setup(self.app_config, opts)
         self.install_hooks()
         super(WalilaWsgiApp, self).init(parser, opts, args)
 
