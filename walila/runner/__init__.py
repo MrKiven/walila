@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import this  # noqa
 
 from gunicorn.app.wsgiapp import WSGIApplication
 
