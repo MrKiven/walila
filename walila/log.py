@@ -105,13 +105,6 @@ def _gen_syslog_logging_config(logger_name):
                 'facility': 'local6',
                 'formatter': 'syslog',
             },
-            'syslog_udp': {
-                'level': 'INFO',
-                'class': 'logging.handlers.SysLogHandler',
-                'address': '/run/systemd/journal/syslog',
-                'facility': 'local6',
-                'formatter': 'syslog',
-            },
         },
         'formatters': {
             'syslog': {
