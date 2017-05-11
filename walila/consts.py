@@ -17,3 +17,4 @@ ENV_PROD = 'prod'
 
 # logger
 SUB_LOGGER_PREFIX = ('celery',)
+DEFAULT_LOG_PATH = '/tmp/{}.log'

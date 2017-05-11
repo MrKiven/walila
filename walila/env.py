@@ -54,7 +54,8 @@ def init_loggers():
     global loggers_initialized
     if loggers_initialized:
         return logger.warning("logging is already initialized, skipping")
-    setup_loggers(load_app_config().logger_name, env())
+    setup_loggers(
+        load_app_config().logger_name, env(), load_app_config().log_path)
     loggers_initialized = True
 
 

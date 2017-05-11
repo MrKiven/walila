@@ -12,6 +12,7 @@ from .consts import (
     DEFAULT_APP_PORT,
     DEFAULT_ENV_CONFIG_PATH,
     DEFAULT_ENV,
+    DEFAULT_LOG_PATH,
 )
 from .utils import cached_property, get_cpu_count
 
@@ -92,6 +93,13 @@ class AppConfig(object):
     def logger_name(self):
         """logger name for current application"""
         return self.config.get('logger_name', self.app_name)
+
+    @cached_property
+    def log_path(self):
+        """log file path, default: ``/tmp/{app_name}.log``."""
+        return self.config.get(
+            'log_path', DEFAULT_LOG_PATH.format(self.app_name)
+        )
 
     @cached_property
     def app_settings_uri(self):

@@ -115,19 +115,51 @@ def _gen_syslog_logging_config(logger_name):
     }
 
 
-def gen_logging_dictconfig(logger_name, env):
+def _gen_file_logging_config(logger_name, log_path):
+    return {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'root': {
+            'handlers': ['filelog'],
+            'level': 'INFO',
+        },
+        "loggers": {
+            logger_name: {
+                "handlers": ['filelog'],
+                "propagate": False,
+                "level": "INFO",
+            },
+        },
+        "handlers": {
+            "filelog": {
+                "level": "INFO",
+                "class": "logging.handlers.RotatingFileHandler",
+                "filename": log_path,
+                "encoding": "utf8",
+                "formatter": "filelog"
+            },
+        },
+        "formatters": {
+            "filelog": {
+                'format': ('%(asctime)s %(levelname)-6s '
+                           '%(name)s[%(process)d] %(message)s')
+            },
+        },
+    }
+
+def gen_logging_dictconfig(logger_name, env, log_path):
     if env == ENV_DEV:
         conf = _gen_console_logging_config(logger_name)
     elif sys.platform == 'darwin':
         conf = _gen_console_logging_config(logger_name)
     else:
-        conf = _gen_syslog_logging_config(logger_name)
+        conf = _gen_file_logging_config(logger_name, log_path=log_path)
     return conf
 
 
-def setup_loggers(logger_name, env):
+def setup_loggers(logger_name, env, log_path=None):
     setup_logger_cls()
-    conf = gen_logging_dictconfig(logger_name, env)
+    conf = gen_logging_dictconfig(logger_name, env, log_path)
     logging.config.dictConfig(conf)
 
 
