@@ -40,7 +40,7 @@ class EnvConfig(object):
             self.config = {}
         return self
 
-    @cached_property
+    @property
     def env(self):
         return self.config.get('env', DEFAULT_ENV)
 
