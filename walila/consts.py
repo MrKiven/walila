@@ -10,6 +10,8 @@ DEFAULT_APP_PORT = 8010
 DEFAULT_ENV_CONFIG_PATH = '/etc/southpay/env.yaml'
 DEFAULT_ENV = 'dev'
 
+DEFAULT_WORKER_NUM = 1
+
 # env
 ENV_DEV = 'dev'
 ENV_TESTING = 'testing'

@@ -13,6 +13,7 @@ from .consts import (
     DEFAULT_ENV_CONFIG_PATH,
     DEFAULT_ENV,
     DEFAULT_LOG_PATH,
+    DEFAULT_WORKER_NUM,
 )
 from .utils import cached_property, get_cpu_count
 
@@ -147,6 +148,9 @@ class AppConfig(object):
         return "0.0.0.0:%d" % self.port
 
     def get_app_n_workers(self):
+        from .env import is_in_dev
+        if is_in_dev():
+            return DEFAULT_WORKER_NUM
         return self._get_conf('worker_nums', self.auto_worker_num)
 
     def _get_conf(self, key, default):
