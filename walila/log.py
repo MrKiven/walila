@@ -150,8 +150,6 @@ def _gen_file_logging_config(logger_name, log_path):
 def gen_logging_dictconfig(logger_name, env, log_path):
     if env == ENV_DEV:
         conf = _gen_console_logging_config(logger_name)
-    elif sys.platform == 'darwin':
-        conf = _gen_console_logging_config(logger_name)
     else:
         conf = _gen_file_logging_config(logger_name, log_path=log_path)
     return conf
