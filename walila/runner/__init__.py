@@ -22,10 +22,10 @@ class SetAppMixin(object):
         self.cfg.set('workers', config.get_app_n_workers())
 
         if is_in_dev():
-            self.cfg.set('accesslog', '-')
+            # self.cfg.set('accesslog', '-')
             self.cfg.set('errorlog', '-')
         else:
-            self.cfg.set('accesslog', config.log_path)
+            # self.cfg.set('accesslog', config.log_path)
             self.cfg.set('errorlog', config.log_path)
             """
             self.cfg.set('syslog', True)
