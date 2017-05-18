@@ -19,4 +19,5 @@ ENV_PROD = 'prod'
 
 # logger
 SUB_LOGGER_PREFIX = ('celery',)
+SHIELDS_LOGGERS = ('dicttoxml', )
 DEFAULT_LOG_PATH = '/tmp/{}.log'
