@@ -2,14 +2,8 @@
 
 import click
 
-from walila.consts import ENV_DEV, ENV_TESTING, ENV_PROD
 from ..config import load_env_config
-
-
-def _validate_env(ctx, argument, value):
-    if value not in (ENV_DEV, ENV_TESTING, ENV_PROD):
-        raise RuntimeError("Invalid env: %s" % value)
-    return value
+from .utils import _validate_env
 
 
 @click.command(

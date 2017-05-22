@@ -4,6 +4,9 @@ import sys
 import socket
 import click
 
+from ..config import load_env_config
+from .utils import _validate_env
+
 
 @click.command()
 @click.argument("app", required=True)
@@ -13,7 +16,11 @@ import click
               help="Number of workers")
 @click.option("-p", "--process_num", type=int, default=1,
               help="Number of processes to run celery worker")
-def consume(app, queue_name, nworkers, process_num):
+@click.option("--environment", type=str, default=load_env_config().env,
+              help='current envionment', callback=+_validate_env)
+def consume(app, queue_name, nworkers, process_num, environment):
+
+    load_env_config().set_currnet_env(environment)
 
     def celery_worker():
         from celery.bin.celery import main
