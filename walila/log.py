@@ -55,6 +55,16 @@ def _gen_console_logging_config(logger_name):
                 'propagate': False,
                 'level': 'INFO',
             },
+            'gunicorn.access': {
+                'handlers': ['console'],
+                'propagate': False,
+                'level': 'INFO',
+            },
+            'gunicorn.error': {
+                'handlers': ['console'],
+                'propagate': False,
+                'level': 'INFO',
+            },
         },
         'handlers': {
             'console': {
@@ -73,7 +83,7 @@ def _gen_console_logging_config(logger_name):
             'console': {
                 '()': 'walila.log.WalilaFormatter',
                 'format': ('%(asctime)s %(levelname)-6s '
-                           '%(name)s[%(process)d] %(message)s')
+                           '%(name)s[%(process)d] %(message)s'),
             },
         },
     }
@@ -94,7 +104,12 @@ def _gen_syslog_logging_config(logger_name):
                 'propagate': False,
                 'level': 'INFO',
             },
-            'gunicorn.*': {
+            'gunicorn.access': {
+                'handlers': ['syslog'],
+                'propagate': False,
+                'level': 'INFO',
+            },
+            'gunicorn.error': {
                 'handlers': ['syslog'],
                 'propagate': False,
                 'level': 'INFO',
@@ -149,7 +164,6 @@ def _gen_file_logging_config(logger_name, log_path):
             },
         },
     }
-
 
 def gen_logging_dictconfig(logger_name, env, log_path):
     if env == ENV_DEV:

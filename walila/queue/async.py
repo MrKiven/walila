@@ -119,12 +119,19 @@ class TaskManager(object):
         return args[0] and args[0][0] in ('self', 'cls')
 
     def register_task(self, task, task_name=None, queue_name='default',
-                      **kwargs):
+                      base_task=WalilaTask, wrapper=None, **kwargs):
         """Reigster a task with `task_name` `task func` `queue_name` etc.
         """
         assert callable(task), "Task should be a function or method"
+        support_queue_names = load_app_config().async_queues.split(',')
+        if queue_name not in support_queue_names:
+            raise RuntimeError(
+                "Unsupport queue name: %r, check your `app.yaml`" % queue_name)
         wrapper_task = self.app.task(
-            bind=self.is_bind(task), base=WalilaTask, **kwargs)(task)
+            bind=self.is_bind(task), base=base_task, queue=queue_name,
+            **kwargs)(task)
+        if wrapper:
+            wrapper_task = wrapper(wrapper_task)
         name = task_name or task.__name__
         self.tasks[name] = wrapper_task
         self.queues[name] = queue_name

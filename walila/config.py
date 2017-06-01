@@ -112,6 +112,16 @@ class AppConfig(object):
             self.config.get('celery_settings', ''), load_env_config().env))
 
     @cached_property
+    def app_self_config(self):
+        """WSGI App instance config uri"""
+        return "_".join((self.config['app_config'], load_env_config().env))
+
+    @cached_property
+    def async_queues(self):
+        """Queues to consume"""
+        return self.config.get('async_queues', 'default')
+
+    @cached_property
     def worker_class(self):
         return self._get_conf('worker_class', DEFAULT_WORKER_CLASS)
 
