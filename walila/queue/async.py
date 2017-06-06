@@ -38,6 +38,7 @@ class WalilaTask(Task):
     def after_return(self, status, retval, task_id, args, kwargs, einfo):
         """"""
 
+
 class RecordErrorsTask(WalilaTask):
     """This base task will record to db when task failure.
 
