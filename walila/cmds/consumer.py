@@ -23,7 +23,7 @@ def consume(app, nworkers, process_num, environment):
 
     def celery_worker():
         from celery.bin.celery import main
-        from ..env import initialize
+        from ..env import initialize, is_in_dev
 
         initialize()
 
@@ -33,6 +33,8 @@ def consume(app, nworkers, process_num, environment):
                 "-c", str(nworkers), "-Q", queue_names, "-E",
                 "-n", "%s@%s" % (queue_names, hostname), "--without-heartbeat",
                 "--without-gossip", "--without-mingle"]
+        if not is_in_dev():
+            argv.extend(["-f", load_app_config().task_log_path])
         main(argv)
 
     sys.exit(celery_worker())

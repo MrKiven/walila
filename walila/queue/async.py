@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 
-import logging
 import functools
 import inspect
 
 import celery
 
 from celery import Task
+from celery.utils.log import get_task_logger
 
 from ..settings import settings
 from ..config import load_app_config
 
 
-logger = logging.getLogger(__name__)
+logger = get_task_logger(__name__)
 
 
 class DefaultSettings(object):

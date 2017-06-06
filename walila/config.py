@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 import sys
 import logging
 import yaml
@@ -97,9 +98,28 @@ class AppConfig(object):
 
     @cached_property
     def log_path(self):
-        """log file path, default: ``/tmp/{app_name}.log``."""
-        return self.config.get(
-            'log_path', DEFAULT_LOG_PATH.format(self.app_name)
+        """log file path, exclude log file name, default: ``/tmp/``."""
+        return self.config.get('log_path', DEFAULT_LOG_PATH)
+
+    @cached_property
+    def log_file_prefix(self):
+        """`southpay`"""
+        return self.app_name.lower()
+
+    @cached_property
+    def app_log_path(self):
+        """app log path, e.g. /tmp/southpay.log"""
+        return os.path.join(
+            self.log_path,
+            ".".join((self.log_file_prefix, 'log'))
+        )
+
+    @cached_property
+    def task_log_path(self):
+        """celery worker log path, e.g. /tmp/southpay_worker.log"""
+        return os.path.join(
+            self.log_path,
+            "_".join((self.log_file_prefix, "worker.log"))
         )
 
     @cached_property

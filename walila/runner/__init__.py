@@ -25,8 +25,8 @@ class SetAppMixin(object):
             self.cfg.set('accesslog', '-')
             self.cfg.set('errorlog', '-')
         else:
-            self.cfg.set('accesslog', config.log_path)
-            self.cfg.set('errorlog', config.log_path)
+            self.cfg.set('accesslog', config.app_log_path)
+            self.cfg.set('errorlog', config.app_log_path)
             """
             self.cfg.set('syslog', True)
             self.cfg.set('syslog_facility', 'local6')

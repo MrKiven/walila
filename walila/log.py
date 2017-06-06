@@ -165,6 +165,7 @@ def _gen_file_logging_config(logger_name, log_path):
         },
     }
 
+
 def gen_logging_dictconfig(logger_name, env, log_path):
     if env == ENV_DEV:
         conf = _gen_console_logging_config(logger_name)
