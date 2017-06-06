@@ -29,22 +29,6 @@ hello
     └── settings.py
 ```
 
-**Sample Demo**
-```
-git clone git@gitlab.wehome.live:shenjialong/walila.git
-
-cd walila/demo/hello
-
-virtualenv .venv
-
-source .venv/bin/activate
-
-pip install -r requirements -i http://10.0.0.251:3141/southpay/dev --trusted-host 10.0.0.251
-
-# startup
-walila serve
-```
-
 
 ### 组件
 
