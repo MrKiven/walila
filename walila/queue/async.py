@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import json
 import functools
 import inspect
 
@@ -10,6 +11,7 @@ from celery.utils.log import get_task_logger
 
 from ..settings import settings
 from ..config import load_app_config
+from ..model import FailedTask
 
 
 logger = get_task_logger(__name__)
@@ -35,6 +37,59 @@ class WalilaTask(Task):
 
     def after_return(self, status, retval, task_id, args, kwargs, einfo):
         """"""
+
+
+class RecordErrorsTask(WalilaTask):
+    """This base task will record to db when task failure.
+
+    e.g.
+
+      task_manager.register_task(
+          some_task, base_task=RecordErrorsTask)
+
+    """
+
+    def on_success(self, retval, task_id, args, kwargs):
+        """Override"""
+
+    def on_failure(self, exc, task_id, args, kwargs, einfo):
+        self.save_failed_task(exc, task_id, args, kwargs, einfo)
+
+    def save_failed_task(self, exc, task_id, args, kwargs, traceback):
+        """Record failed task to db
+        :type exc: Exception
+        """
+        name = self.name.split('.')[-1]
+        full_name = self.name
+        exception_class = exc.__class__.__name__
+        exception_msg = str(exc).strip()
+        traceback = str(traceback).strip()
+        args = json.dumps(list(args))
+        kwargs = json.dumps(kwargs)
+        need_retry = getattr(self, 'retry_if_fail', True)
+
+        # Find if task with same args, name and exception already exists,
+        # If do, update failures count
+        existing_task = FailedTask.get_task(
+            full_name, args, kwargs, exception_class, exception_msg)
+
+        if existing_task:
+            failures = existing_task.failures + 1
+            existing_task.update(failures=failures)
+            logger.info(
+                "Update failed task %r failures to %d ", full_name, failures)
+        else:
+            FailedTask.add(
+                name=name,
+                full_name=full_name,
+                args=args,
+                kwargs=kwargs,
+                exception_class=exception_class,
+                exception_msg=exception_msg,
+                traceback=traceback,
+                task_id=task_id,
+                need_retry=need_retry)
+            logger.info("Add failed task %r", full_name)
 
 
 def _bind_own_base_task(func):
