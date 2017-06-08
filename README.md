@@ -2,13 +2,11 @@
 
 ![walila](resource/walila.jpg)
 
-Walila(瓦莉拉) 是艾泽拉斯最厉害的刺客之一.
-
 
 ### Install
 
 ```shell
-pip install walila -i http://10.0.0.251:3141/southpay/dev --trusted-host 10.0.0.251
+pip install walila
 ```
 
 `walila --help` for more detail.
@@ -29,24 +27,7 @@ hello
     └── settings.py
 ```
 
-**Sample Demo**
-```
-git clone git@gitlab.wehome.live:shenjialong/walila.git
-
-cd walila/demo/hello
-
-virtualenv .venv
-
-source .venv/bin/activate
-
-pip install -r requirements -i http://10.0.0.251:3141/southpay/dev --trusted-host 10.0.0.251
-
-# startup
-walila serve
-```
-
-
-### 组件
+### Components
 
 1. db manager
 2. settings wrapper

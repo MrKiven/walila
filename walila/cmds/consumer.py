@@ -29,7 +29,7 @@ def consume(app, nworkers, process_num, environment):
 
         hostname = socket.gethostname()
 
-        argv = ["celery", "worker", "-l", "INFO", "-A", app, "-B",
+        argv = ["celery", "worker", "-l", "INFO", "-A", app,
                 "-c", str(nworkers), "-Q", queue_names, "-E",
                 "-n", "%s@%s" % (queue_names, hostname), "--without-heartbeat",
                 "--without-gossip", "--without-mingle"]
