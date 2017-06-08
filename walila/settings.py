@@ -189,7 +189,10 @@ class Config(DefaultConfig):
         "LOGGER_NAME": "SouthPay",
 
         # async
-        "ASYNC_ENABLED": False
+        "ASYNC_ENABLED": False,
+
+        # statsd
+        "STATSD_SETTINGS": default_empty("")
     }
 
     explicit = False
