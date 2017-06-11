@@ -102,8 +102,13 @@ def _bind_own_base_task(func):
 
 
 def init_celery_app():
-    """Init celery app with settings objec"""
+    """Init celery app with settings objec.
+
+    The transport part is the broker implementation to use, and the default is
+    amqp, (uses librabbitmq if installed or falls back to pyamqp).
+    """
     app = celery.Celery()
+    app.conf.task_protocol = 1  # librabbitmq, no cover
     celery_config = load_app_config().celery_settings
     if settings.ASYNC_ENABLED:
         if not celery_config:

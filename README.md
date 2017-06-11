@@ -6,7 +6,7 @@
 ### Install
 
 ```shell
-pip install walila 
+pip install walila
 ```
 
 `walila --help` for more detail.
@@ -26,7 +26,6 @@ hello
     ├── app.py
     └── settings.py
 ```
-
 
 ### Components
 
